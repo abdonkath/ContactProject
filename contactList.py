@@ -8,9 +8,16 @@ from contact import BusinessContact
 
 class ContactList:
   def __init__(self):
-    self.contacts = [] #list
+    self.contacts = [] #list 
   
   def addContact(self, contact):
+    if not self.isValidNum(contact.getNumber()): # if the number given is not valid
+      while True:
+        num = input(contact.getName() + "'s number is not valid. Please enter a valid number: ")
+        if self.isValidNum(num):
+          contact.changeNumber(num)
+          break
+        
     if isinstance(contact, BusinessContact):
       if self.checkNumber(contact.getNumber()) or self.checkEmail(contact.getEmail()):
         return
@@ -42,6 +49,12 @@ class ContactList:
         print(str(c.getName()) + " #" + str(c.getNumber()) + " " + str(c.getEmail()) + " (" + str(c.getCompany()) + ")")
       else:
         print(str(c.getName()) + " #" + str(c.getNumber()))
+        
+  #check if the number is valid 
+  def isValidNum(self, number):
+    if len(str(number)) != 9:
+      return False
+    return True
   
   #What if a phone number is already in the system?
   #This function will check if the contact being added is already in the system
@@ -58,22 +71,14 @@ class ContactList:
   def checkEmail(self, email):
     for contact in self.contacts:
       if isinstance(contact, BusinessContact) and contact.getEmail() == email:
-        new_email = input("The email you entered is already in the system. Enter a different email: ")
-        while True:
-          
-          
-        
+        print("The email you entered is already in the system. Enter a different email")
+        return True
       
-contact1 = Contact("Alex", 123456789)
-contact2 = Contact("Sarah", 123456786)
-business1 = BusinessContact("Max", 123456783, "max@gmail.com", "Meta")
-business2 = BusinessContact("Max", 123426783, "max@gmail.com", "Meta")
-# contact3 = Contact("Alex", 123456787)
+    return False
+      
+contact1 = Contact("Alex", 12345689)
 
-list = ContactList()
-list.addContact(contact1)
-list.addContact(contact2)
-list.addContact(business1)
-list.addContact(business2)
+list1 = ContactList()
+list1.addContact(contact1)
 
-list.display()
+list1.display()

@@ -1,10 +1,7 @@
 class Contact:
   def __init__(self, name, number):
     self.__name = name #private variables
-    if len(str(number)) != 9:
-      print(name + "'s number is not valid. Try again.")
-    else:
-      self.__number = number  #private variables
+    self.__number = number  #private variables
     
   #Encapsulation - private variables so that it cannot be access directly
   #getters
