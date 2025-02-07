@@ -11,12 +11,10 @@ class ContactList:
     self.contacts = [] #list 
   
   def addContact(self, contact):
-    if not self.isValidNum(contact.getNumber()): # if the number given is not valid
-      while True:
-        num = input(contact.getName() + "'s number is not valid. Please enter a valid number: ")
-        if self.isValidNum(num):
-          contact.changeNumber(num)
-          break
+    while not self.isValidNum(contact.getNumber()): # if the number given is not valid:
+      num = input(contact.getName() + "'s number is not valid. Please enter a valid number: ")
+      if self.isValidNum(num):
+        contact.changeNumber(num)
         
     if isinstance(contact, BusinessContact):
       if self.checkNumber(contact.getNumber()) or self.checkEmail(contact.getEmail()):
