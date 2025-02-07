@@ -58,10 +58,11 @@ class ContactList:
   def checkEmail(self, email):
     for contact in self.contacts:
       if isinstance(contact, BusinessContact) and contact.getEmail() == email:
-        print("The email you entered is " + contact.getEmail() + "'s email." + " Enter a different email")
-        return True
-      
-    return False
+        new_email = input("The email you entered is already in the system. Enter a different email: ")
+        while True:
+          
+          
+        
       
 contact1 = Contact("Alex", 123456789)
 contact2 = Contact("Sarah", 123456786)
