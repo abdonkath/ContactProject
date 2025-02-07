@@ -11,18 +11,30 @@ class ContactList:
     self.contacts = [] #list 
   
   def addContact(self, contact):
-    while not self.isValidNum(contact.getNumber()): # if the number given is not valid:
-      num = input(contact.getName() + "'s number is not valid. Please enter a valid number: ")
-      if self.isValidNum(num):
-        contact.changeNumber(num)
+    while not self.isValidNum(contact.getNumber()):  # Check if the number is valid initially
+        num = input(contact.getName() + "'s number is not valid. Please enter a valid number: ")
+        if self.isValidNum(num):
+            contact.changeNumber(num)
+
+    # Check if number or email already exists in the system
+    while self.checkNumber(contact.getNumber()) or (isinstance(contact, BusinessContact) and self.checkEmail(contact.getEmail())):
+        print("The number or email you entered is already in use. Please enter a different number and/or email.")
         
-    if isinstance(contact, BusinessContact):
-      if self.checkNumber(contact.getNumber()) or self.checkEmail(contact.getEmail()):
-        return
-    else:
-      if self.checkNumber(contact.getNumber()):
-        return
+        # Ask for a new number and validate
+        num = input("Please enter a new valid number for " + contact.getName() + ": ")
+        while not self.isValidNum(num):  # Keep prompting until the number is valid
+            num = input(contact.getName() + "'s number is not valid. Please enter a valid number: ")
+        contact.changeNumber(num)
+
+        # If the contact is a BusinessContact, check email too
+        if isinstance(contact, BusinessContact):
+            email = input("Please enter a new email for " + contact.getName() + ": ")
+            while self.checkEmail(email):  # Keep prompting until the email is not in use
+                email = input("The email you entered is already in use. Please enter a different email: ")
+            contact.changeEmail(email)
+
     self.contacts.append(contact)
+
   
   def removeContact(self, name):
     same_name = [contact for contact in self.contacts if contact.getName() == name] #comprehension
@@ -50,7 +62,7 @@ class ContactList:
         
   #check if the number is valid 
   def isValidNum(self, number):
-    if len(str(number)) != 9:
+    if len(str(number)) != 10:
       return False
     return True
   
@@ -59,7 +71,6 @@ class ContactList:
   def checkNumber(self, number):
     for contact in self.contacts:
       if contact.getNumber() == number:
-        print("The number you entered is " + contact.getName() + "'s number." + " Enter a different number")
         return True
       
     return False
@@ -69,14 +80,34 @@ class ContactList:
   def checkEmail(self, email):
     for contact in self.contacts:
       if isinstance(contact, BusinessContact) and contact.getEmail() == email:
-        print("The email you entered is already in the system. Enter a different email")
         return True
       
     return False
+  
+  def addNewContact(self):
+    type_contact = input("What type of contact would you like to add?\n" + "a) Contact\n" + "b) Business Contact\n").lower()
+    
+    if (type_contact == 'a' or type_contact == "contact"):
+      name = input("Enter a name: ")
+      num = input("Enter a number: ")
+      contact = Contact(name, num)
+      self.addContact(contact)
+    elif(type_contact == 'b' or type_contact == "business contact" or type_contact == "business"):
+      name = input("Enter name: ")
+      num = input("Enter number: ")
+      email = input("Enter email: ")
+      company = input("Enter company name: ")
+      contact = BusinessContact(name, num, email, company)
+      self.addContact(contact)
       
-contact1 = Contact("Alex", 12345689)
 
+alif = Contact("Alif", 1234567892)
+alif2 = Contact("Alif", 1234565892)
 list1 = ContactList()
-list1.addContact(contact1)
+list1.addContact(alif)
+list1.addContact(alif2)
 
+
+list1.display()
+list1.removeContact("Alif")
 list1.display()
