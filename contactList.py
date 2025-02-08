@@ -16,24 +16,21 @@ class ContactList:
         if self.isValidNum(num):
             contact.changeNumber(num)
 
-    # Check if number or email already exists in the system
-    while self.checkNumber(contact.getNumber()) or (isinstance(contact, BusinessContact) and self.checkEmail(contact.getEmail())):
-        print("The number or email you entered is already in use. Please enter a different number and/or email.")
-        
-        # Ask for a new number and validate
-        num = input("Please enter a new valid number for " + contact.getName() + ": ")
-        while not self.isValidNum(num):  # Keep prompting until the number is valid
-            num = input(contact.getName() + "'s number is not valid. Please enter a valid number: ")
+    # Check if number already exists in the system
+    while self.checkNumber(contact.getNumber()):
+      print("The number you entered is already in use. Please enter a different number.")
+      # Ask for a new number and validate
+      num = input("Please enter a new valid number for " + contact.getName() + ": ")
+      while not self.isValidNum(num):  # Keep prompting until the number is valid
+        num = input(contact.getName() + "'s number is not valid. Please enter a valid number: ")
         contact.changeNumber(num)
-
+        
         # If the contact is a BusinessContact, check email too
-        if isinstance(contact, BusinessContact):
-            email = input("Please enter a new email for " + contact.getName() + ": ")
-            while self.checkEmail(email):  # Keep prompting until the email is not in use
-                email = input("The email you entered is already in use. Please enter a different email: ")
-            contact.changeEmail(email)
-
-    self.contacts.append(contact)
+    if isinstance(contact, BusinessContact):
+      while self.checkEmail(contact.getEmail()):  # Keep prompting until the email is not in use
+        email = input("The email you entered for " + contact.getName() + " is already in use. Please enter a different email: ")
+        contact.changeEmail(email)
+    self.contacts.append(contact) #add the contact to list
 
   
   def removeContact(self, name):
@@ -101,13 +98,9 @@ class ContactList:
       self.addContact(contact)
       
 
-alif = Contact("Alif", 1234567892)
-alif2 = Contact("Alif", 1234565892)
+
 list1 = ContactList()
-list1.addContact(alif)
-list1.addContact(alif2)
+list1.addNewContact()
+list1.addNewContact()
 
-
-list1.display()
-list1.removeContact("Alif")
 list1.display()
