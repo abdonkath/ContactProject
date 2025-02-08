@@ -31,6 +31,7 @@ class ContactList:
         email = input("The email you entered for " + contact.getName() + " is already in use. Please enter a different email: ")
         contact.changeEmail(email)
     self.contacts.append(contact) #add the contact to list
+    print("Succesfully added " + contact.getName() + "'s contact.\n")
 
   
   def removeContact(self, name):
